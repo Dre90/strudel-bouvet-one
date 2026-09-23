@@ -10,6 +10,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden;
 }
 
 header {
@@ -78,6 +79,7 @@ main {
   flex: 1;
   min-width: 0;
   min-height: 0;
+  overflow-y: auto;
 }
 
 #viz {
@@ -91,7 +93,11 @@ body.viz-hidden #viz {
   display: none;
 }
 
-#repl strudel-editor,
+/* Editoren vokser med innholdet; #repl scroller. */
 #repl .cm-editor {
-  height: 100%;
+  height: auto;
+}
+
+#repl .cm-scroller {
+  overflow: visible;
 }
