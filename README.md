@@ -53,6 +53,7 @@ Lag en ny fil i `setlists/` for en ny setliste – den dukker opp i dropdown ett
 Be Copilot i VS Code, f.eks.: _«Lag en ny fil i patterns/ med en rolig lo-fi hiphop-loop i 85 BPM»_.
 
 Kunnskapen Copilot bruker ligger i `.github/`:
+
 - `copilot-instructions.md` – Strudel-syntaks og funksjoner (alltid lastet).
 - `instructions/lyder.instructions.md` – lydkatalog: alle samples, banker, akustiske instrumenter, GM, synther.
 - `instructions/komposisjon.instructions.md` – hva slags musikk vi lager (bakgrunnsmusikk), harmoni, miks, struktur.

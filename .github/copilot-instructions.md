@@ -4,6 +4,7 @@ Dette prosjektet lager musikk med [Strudel](https://strudel.cc) (JavaScript-port
 Filene i `patterns/*.js` er Strudel-koder som evalueres direkte i nettleseren via `@strudel/repl`.
 
 Denne fila dekker **syntaks**. Andre instruksjonsfiler:
+
 - [lyder.instructions.md](instructions/lyder.instructions.md) – **lydkatalog**: alle samples, banker, akustiske instrumenter, GM og synther, og hva som passer til hva. **Les denne før du velger lyder.**
 - [komposisjon.instructions.md](instructions/komposisjon.instructions.md) – harmoni, melodi, struktur, miks, og hva slags musikk vi lager (bakgrunnsmusikk).
 - [sjangre.instructions.md](instructions/sjangre.instructions.md) – tempo, trommer og lydvalg per sjanger.
@@ -34,11 +35,11 @@ Referanseeksempler: `patterns/03-song-structure.js` (struktur), `patterns/07-sof
 | `"<bd sd>"`              | Alterner – én per cycle                         |
 | `"bd, hh*2"`             | Polyfoni – lag som spilles samtidig             |
 | `"bd(3,8)"`              | Euklidsk rytme (3 slag over 8 steg)             |
-| `"bd? sd"` / `"hh?0.2"`   | 50 % / 20 % sjanse for å spille                 |
+| `"bd? sd"` / `"hh?0.2"`  | 50 % / 20 % sjanse for å spille                 |
 | `"bd:3"`                 | Sample nr. 3 i banken                           |
 | `"c@3 e"`                | Forleng – c varer 3 enheter, e varer 1          |
 | `"c!3 e"`                | Repeter som separate hendelser (c c c e)        |
-| `"bd \| sd \| hh"`        | Tilfeldig valg per cycle                        |
+| `"bd \| sd \| hh"`       | Tilfeldig valg per cycle                        |
 | `"bd . hh hh . sd"`      | Punktum = gruppering                            |
 | `"c e g"` / `"c4 e4 g4"` | Notenavn (oktav valgfri)                        |
 | `"0 2 4"`                | Tall – brukes med `n()` + `.scale()`            |

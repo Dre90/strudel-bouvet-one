@@ -82,15 +82,39 @@ main {
   overflow-y: auto;
 }
 
-#viz {
+#viz-wrap {
   flex: 1 1 50%;
   min-width: 0;
   min-height: 0;
+  position: relative;
   background: #0a0a0e;
   border-left: 1px solid #333;
+  overflow: hidden;
 }
 
-body.viz-hidden #viz {
+#viz-bg {
+  position: absolute;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  opacity: 0.22;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+
+#viz-wrap.idle #viz-bg {
+  opacity: 0.85;
+}
+
+#viz {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body.viz-hidden #viz-wrap {
   display: none;
 }
 

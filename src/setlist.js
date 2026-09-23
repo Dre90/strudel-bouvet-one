@@ -1,18 +1,31 @@
 // Setliste: spiller låter etter hverandre med myk overgang.
 // Varighet per låt leses fra `// @minutes N` i pattern-fila (ellers defaultMinutes).
 
-const setlistModules = import.meta.glob("../setlists/*.json", { eager: true, import: "default" });
+const setlistModules = import.meta.glob("../setlists/*.json", {
+  eager: true,
+  import: "default",
+});
 
 export const setlists = Object.fromEntries(
   Object.entries(setlistModules)
     .map(([path, data]) => {
       const id = path.match(/\/([^/]+)\.json$/)[1];
-      return [id, { id, name: data.name ?? id, crossfadeSeconds: 6, defaultMinutes: 5, ...data }];
+      return [
+        id,
+        {
+          id,
+          name: data.name ?? id,
+          crossfadeSeconds: 6,
+          defaultMinutes: 5,
+          ...data,
+        },
+      ];
     })
     .sort(([a], [b]) => a.localeCompare(b)),
 );
 
-const masterGain = () => globalThis.getSuperdoughAudioController?.().output?.destinationGain?.gain;
+const masterGain = () =>
+  globalThis.getSuperdoughAudioController?.().output?.destinationGain?.gain;
 const ctx = () => globalThis.getAudioContext?.();
 
 // Fader master-volumet. Brukes både til overganger i setlista og til å kutte haler ved Stopp.
@@ -57,7 +70,9 @@ export function createSetlist({ loadCode, switchTo, onStatus }) {
   function tick() {
     const next = songs[(index + 1) % songs.length];
     const s = remaining();
-    onStatus(`${setlist.name} ${index + 1}/${songs.length}: ${songs[index]} · ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} igjen · neste: ${next}`);
+    onStatus(
+      `${setlist.name} ${index + 1}/${songs.length}: ${songs[index]} · ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} igjen · neste: ${next}`,
+    );
   }
 
   async function playIndex(i, { fadeIn = true } = {}) {
@@ -71,7 +86,10 @@ export function createSetlist({ loadCode, switchTo, onStatus }) {
     if (myRun !== run) return;
     songEndsAt = Date.now() + minutes * 60_000;
     clearTimers();
-    songTimer = setTimeout(advance, minutes * 60_000 - (setlist.crossfadeSeconds / 2) * 1000);
+    songTimer = setTimeout(
+      advance,
+      minutes * 60_000 - (setlist.crossfadeSeconds / 2) * 1000,
+    );
     tickTimer = setInterval(tick, 1000);
     tick();
   }

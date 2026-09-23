@@ -11,18 +11,36 @@
       <button id="toggle" class="primary">▶ Start</button>
       <select id="pattern"></select>
       <span class="sep"></span>
-      <select id="setlist-select" title="Velg setliste (setlists/*.json)"></select>
-      <button id="setlist" title="Spill valgt setliste fra start med myk overgang mellom låtene">▶ Spill setliste</button>
-      <button id="next" title="Hopp til neste låt i setlista" hidden>⏭ Neste</button>
+      <select
+        id="setlist-select"
+        title="Velg setliste (setlists/*.json)"
+      ></select>
+      <button
+        id="setlist"
+        title="Spill valgt setliste fra start med myk overgang mellom låtene"
+      >
+        ▶ Spill setliste
+      </button>
+      <button id="next" title="Hopp til neste låt i setlista" hidden>
+        ⏭ Neste
+      </button>
       <span class="sep"></span>
-      <button id="viz-mode" title="Bytt visualisering (bytter automatisk hvert 40. sekund)">✨ bars</button>
+      <button
+        id="viz-mode"
+        title="Bytt visualisering (bytter automatisk hvert 40. sekund)"
+      >
+        ✨ bars
+      </button>
       <button id="viz-toggle" title="Vis/skjul visualisering">◨</button>
       <span id="status">Klar – trykk Start for å aktivere lyd</span>
     </header>
     <pre id="error" hidden></pre>
     <main>
       <div id="repl"></div>
-      <canvas id="viz"></canvas>
+      <div id="viz-wrap" class="idle">
+        <img id="viz-bg" src="/logo.png" alt="" />
+        <canvas id="viz"></canvas>
+      </div>
     </main>
     <script type="module" src="/src/main.js"></script>
   </body>

@@ -2,8 +2,10 @@
 
 const MODES = ["bars", "scope", "radial", "particles", "tunnel"];
 
-export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
+export function createVisualizer(canvas, { autoCycleSeconds = 40, onIdle } = {}) {
   const ctx2d = canvas.getContext("2d");
+  let idle = true;
+  let lastPeak = 0;
   let analyser;
   let freq;
   let wave;
@@ -64,9 +66,18 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
     return hit;
   }
 
+  // Visker ut mot gjennomsiktig (ikke svart), så bakgrunnsbildet under canvaset er synlig.
   function fade(w, h, alpha) {
-    ctx2d.fillStyle = `rgba(10, 10, 14, ${alpha})`;
+    ctx2d.globalCompositeOperation = "destination-out";
+    ctx2d.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     ctx2d.fillRect(0, 0, w, h);
+    ctx2d.globalCompositeOperation = "source-over";
+  }
+
+  function setIdle(v) {
+    if (v === idle) return;
+    idle = v;
+    onIdle?.(v);
   }
 
   // --- Modus 1: speilede spektrum-søyler ------------------------------------
@@ -101,7 +112,10 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
       const offset = (pass - 1) * 18;
       for (let i = 0; i < wave.length; i += 4) {
         const x = (i / wave.length) * w;
-        const y = h / 2 + offset + ((wave[(i + pass * 60) % wave.length] - 128) / 128) * h * 0.4;
+        const y =
+          h / 2 +
+          offset +
+          ((wave[(i + pass * 60) % wave.length] - 128) / 128) * h * 0.4;
         i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
       }
       ctx2d.strokeStyle = `hsla(${hue + pass * 30}, 90%, ${60 + pass * 10}%, ${0.9 - pass * 0.25})`;
@@ -125,7 +139,10 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
       ctx2d.lineWidth = 4;
       ctx2d.beginPath();
       ctx2d.moveTo(cx + Math.cos(a) * base, cy + Math.sin(a) * base);
-      ctx2d.lineTo(cx + Math.cos(a) * (base + len), cy + Math.sin(a) * (base + len));
+      ctx2d.lineTo(
+        cx + Math.cos(a) * (base + len),
+        cy + Math.sin(a) * (base + len),
+      );
       ctx2d.stroke();
     }
     ctx2d.beginPath();
@@ -145,7 +162,15 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
       for (let i = 0; i < 90; i++) {
         const a = Math.random() * Math.PI * 2;
         const sp = (3 + Math.random() * 8) * scale;
-        particles.push({ x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, size: (4 + Math.random() * 8) * scale, hue: hue + Math.random() * 60 });
+        particles.push({
+          x: cx,
+          y: cy,
+          vx: Math.cos(a) * sp,
+          vy: Math.sin(a) * sp,
+          life: 1,
+          size: (4 + Math.random() * 8) * scale,
+          hue: hue + Math.random() * 60,
+        });
       }
     }
     // Jevn strøm av små partikler styrt av total energi
@@ -153,7 +178,15 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
     for (let i = 0; i < n; i++) {
       const a = Math.random() * Math.PI * 2;
       const sp = (0.6 + Math.random() * 2.5) * scale;
-      particles.push({ x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, size: (2 + Math.random() * 4) * scale, hue: hue + 120 + Math.random() * 40 });
+      particles.push({
+        x: cx,
+        y: cy,
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp,
+        life: 1,
+        size: (2 + Math.random() * 4) * scale,
+        hue: hue + 120 + Math.random() * 40,
+      });
     }
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
@@ -162,7 +195,13 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
       p.vx *= 1 + 0.012 * dt;
       p.vy *= 1 + 0.012 * dt;
       p.life -= 0.007 * dt;
-      if (p.life <= 0 || p.y < -20 || p.y > h + 20 || p.x < -20 || p.x > w + 20) {
+      if (
+        p.life <= 0 ||
+        p.y < -20 ||
+        p.y > h + 20 ||
+        p.x < -20 ||
+        p.x > w + 20
+      ) {
         particles.splice(i, 1);
         continue;
       }
@@ -188,7 +227,8 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
     fade(w, h, 0.22);
     const cx = w / 2;
     const cy = h / 2;
-    if (hit) rings.push({ r: 6, hue: hue + Math.random() * 80, width: 4 + beat * 8 });
+    if (hit)
+      rings.push({ r: 6, hue: hue + Math.random() * 80, width: 4 + beat * 8 });
     if (performance.now() - lastRing > 230) {
       lastRing = performance.now();
       rings.push({ r: 6, hue: hue + 40, width: 2 });
@@ -235,32 +275,48 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
     // Stillhet (stoppet / fadet ned): tegn ingenting nytt, bare la bildet dø ut.
     let peak = 0;
     for (let i = 0; i < 64; i++) if (freq[i] > peak) peak = freq[i];
+    lastPeak = peak;
     if (peak < 12) {
+      setIdle(true);
       fade(w, h, 0.12);
       particles.length = 0;
       rings.length = 0;
       return;
     }
+    setIdle(false);
 
     hue = (hue + 0.15 + beat * 0.5) % 360;
 
-    if (autoCycleSeconds && performance.now() - lastCycle > autoCycleSeconds * 1000) next();
+    if (
+      autoCycleSeconds &&
+      performance.now() - lastCycle > autoCycleSeconds * 1000
+    )
+      next();
 
     switch (MODES[mode]) {
-      case "bars": drawBars(w, h); break;
-      case "scope": drawScope(w, h); break;
-      case "radial": drawRadial(w, h); break;
-      case "particles": drawParticles(w, h, hit); break;
-      case "tunnel": drawTunnel(w, h, hit); break;
+      case "bars":
+        drawBars(w, h);
+        break;
+      case "scope":
+        drawScope(w, h);
+        break;
+      case "radial":
+        drawRadial(w, h);
+        break;
+      case "particles":
+        drawParticles(w, h, hit);
+        break;
+      case "tunnel":
+        drawTunnel(w, h, hit);
+        break;
     }
   }
 
   function next() {
     mode = (mode + 1) % MODES.length;
     lastCycle = performance.now();
-    ctx2d.fillStyle = "#0a0a0e";
     const { w, h } = resize();
-    ctx2d.fillRect(0, 0, w, h);
+    ctx2d.clearRect(0, 0, w, h);
   }
 
   requestAnimationFrame(frame);
@@ -271,7 +327,16 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
       return MODES[mode];
     },
     get debug() {
-      return { beats, energy, bassAvg, particles: particles.length, rings: rings.length, frames };
+      return {
+        idle,
+        lastPeak,
+        beats,
+        energy,
+        bassAvg,
+        particles: particles.length,
+        rings: rings.length,
+        frames,
+      };
     },
   };
 }

@@ -5,13 +5,14 @@ applyTo: "patterns/**/*.js"
 
 # Komposisjon i Strudel
 
-Syntaks og funksjonsliste ligger i [copilot-instructions.md](../copilot-instructions.md). Lydvalg i [lyder.instructions.md](./lyder.instructions.md). Denne fila handler om *hva* du skal skrive, ikke *hvordan*.
+Syntaks og funksjonsliste ligger i [copilot-instructions.md](../copilot-instructions.md). Lydvalg i [lyder.instructions.md](./lyder.instructions.md). Denne fila handler om _hva_ du skal skrive, ikke _hvordan_.
 
 ## Hva slags musikk vi lager
 
 **Bakgrunnsmusikk til konferansepauser, kontor, sosiale settinger.** Den skal kunne stå på i 30 minutter uten at noen blir sliten eller distrahert.
 
 Det betyr:
+
 - **Rolig energi.** 80–122 BPM. Ingen drops som krever oppmerksomhet. Oppbygginger skal være myke.
 - **Organisk lydbilde.** Ekte instrumenter (piano, epiano, vibrafon, kontrabass, gitar, shaker, bongo) foran synther. Synth er greit som sub-bass eller én pad – ikke som hovedstemme.
 - **Ingen skarpe transienter.** Lavpass på kick (`.lpf(1500–3000)`), dempet clap/snare, hihat med `.hpf` og lav gain. Ikke hvit støy-hihat med mindre den er svak.
@@ -33,7 +34,7 @@ Det betyr:
 
 ### Setliste-flyt
 
-En setliste skal holde **én stil**. Ikke hopp mellom lounge/hiphop/house – det bryter stemningen. Varier *innen* stilen (instrumenter, toneart, 110–122 BPM) og ordne låtene så tempo og energi endrer seg gradvis: rolig åpning → litt mer driv → roligst til slutt. Nabotonearter (F→C→G, Am→Em→Dm) gir mykere overganger.
+En setliste skal holde **én stil**. Ikke hopp mellom lounge/hiphop/house – det bryter stemningen. Varier _innen_ stilen (instrumenter, toneart, 110–122 BPM) og ordne låtene så tempo og energi endrer seg gradvis: rolig åpning → litt mer driv → roligst til slutt. Nabotonearter (F→C→G, Am→Em→Dm) gir mykere overganger.
 
 Sjangre som passer: chill house, deep house, lo-fi hiphop, downtempo, nu-jazz/lounge, bossa/latin-lounge, ambient, chill EDM (half-time). Se [sjangre.instructions.md](./sjangre.instructions.md).
 
@@ -50,8 +51,15 @@ Sjangre som passer: chill house, deep house, lo-fi hiphop, downtempo, nu-jazz/lo
 setcps(0.5); // 120 BPM
 const drums = s("bd*2, ~ hh*2, ~ ~ sd ~").bank("RolandTR909").lpf(3000);
 const shaker = s("shaker_small*8").n("<0 1 2 1>").gain(0.3).hpf(3000);
-const bass = n("<0 0 5 3>").scale("C2:minor").s("gm_electric_bass_finger").lpf(600);
-const keys = chord("<Cm7 Cm7 Fm7 Ab^7>").voicing().s("gm_epiano1").room(0.4).orbit(2);
+const bass = n("<0 0 5 3>")
+  .scale("C2:minor")
+  .s("gm_electric_bass_finger")
+  .lpf(600);
+const keys = chord("<Cm7 Cm7 Fm7 Ab^7>")
+  .voicing()
+  .s("gm_epiano1")
+  .room(0.4)
+  .orbit(2);
 const lead = n("<0 2 4 3> ~ <4 2> ~")
   .scale("C4:minor")
   .s("vibraphone_soft")
@@ -122,15 +130,15 @@ arrange([4, intro], [8, verse], [8, drop], [4, verse]); // antall cycles per del
 
 ## Miks (nivåer og plassering)
 
-| Lag           | gain      | Filter                             | Plassering                     | Orbit |
-| ------------- | --------- | ---------------------------------- | ------------------------------ | ----- |
-| Kick          | 0.9–1.0   | `.lpf(1500–3000)` for mykhet       | midt                           | 1     |
-| Bass          | 0.7–0.9   | `.lpf(500–800)`                    | midt                           | 1     |
-| Snare/clap    | 0.5–0.8   | `.lpf(4000–6000)`                  | midt, `.room(0.2–0.3)`         | 1     |
-| Hihat/shaker  | 0.25–0.5  | `.hpf(3000–5000)`                  | `.pan(0.6)`                    | 1     |
-| Akkorder      | 0.35–0.5  | `.hpf(200)` unngå basskollisjon    | `.room(0.4+)`                  | 2     |
-| Pad           | 0.2–0.35  | `.hpf(300)`, `.lpf(sine…)`         | bredt, `.room(0.7+)`           | 2     |
-| Melodi        | 0.4–0.6   | –                                  | `.pan(0.4)`, `.delay`, `.room` | 3     |
+| Lag          | gain     | Filter                          | Plassering                     | Orbit |
+| ------------ | -------- | ------------------------------- | ------------------------------ | ----- |
+| Kick         | 0.9–1.0  | `.lpf(1500–3000)` for mykhet    | midt                           | 1     |
+| Bass         | 0.7–0.9  | `.lpf(500–800)`                 | midt                           | 1     |
+| Snare/clap   | 0.5–0.8  | `.lpf(4000–6000)`               | midt, `.room(0.2–0.3)`         | 1     |
+| Hihat/shaker | 0.25–0.5 | `.hpf(3000–5000)`               | `.pan(0.6)`                    | 1     |
+| Akkorder     | 0.35–0.5 | `.hpf(200)` unngå basskollisjon | `.room(0.4+)`                  | 2     |
+| Pad          | 0.2–0.35 | `.hpf(300)`, `.lpf(sine…)`      | bredt, `.room(0.7+)`           | 2     |
+| Melodi       | 0.4–0.6  | –                               | `.pan(0.4)`, `.delay`, `.room` | 3     |
 
 - Alt over 1.0 klipper lett når mange lag stables. Start lavt og løft det som mangler.
 - Reverb (`.room`) på pad og melodi, **ikke** på kick og bass.

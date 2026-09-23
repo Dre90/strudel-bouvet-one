@@ -75,7 +75,7 @@ function showError(err) {
 async function evaluateCurrent() {
   const ed = editor();
   if (!ed) return;
-  setStatus('Laster lyd …');
+  setStatus("Laster lyd …");
   await ensureAudio();
   fadeMaster(1, 0.1);
   await ed.evaluate();
@@ -168,7 +168,10 @@ nextBtn.addEventListener("click", () => setlist.next());
 
 // --- Visualizer ------------------------------------------------------------
 
-const viz = createVisualizer(document.getElementById("viz"));
+const vizWrap = document.getElementById("viz-wrap");
+const viz = createVisualizer(document.getElementById("viz"), {
+  onIdle: (idle) => vizWrap.classList.toggle("idle", idle),
+});
 const vizModeBtn = document.getElementById("viz-mode");
 const vizToggleBtn = document.getElementById("viz-toggle");
 
@@ -180,9 +183,13 @@ setInterval(() => (vizModeBtn.textContent = `✨ ${viz.modeName}`), 1000);
 
 vizToggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("viz-hidden");
-  localStorage.setItem("viz-hidden", document.body.classList.contains("viz-hidden"));
+  localStorage.setItem(
+    "viz-hidden",
+    document.body.classList.contains("viz-hidden"),
+  );
 });
-if (localStorage.getItem("viz-hidden") === "true") document.body.classList.add("viz-hidden");
+if (localStorage.getItem("viz-hidden") === "true")
+  document.body.classList.add("viz-hidden");
 
 // Stopp planleggingen og fade master ned, så lange samples og reverb-haler ikke henger igjen.
 function stopAll() {
