@@ -1,5 +1,6 @@
 import "@strudel/repl";
 import { createSetlist, setlists, fadeMaster } from "./setlist.js";
+import { createVisualizer } from "./visualizer.js";
 
 // Alle patterns lastes som rå tekst, slik at fila ser ut nøyaktig som på strudel.cc.
 const patternModules = import.meta.glob("../patterns/*.js", {
@@ -164,6 +165,24 @@ setlistBtn.addEventListener("click", () => {
 });
 
 nextBtn.addEventListener("click", () => setlist.next());
+
+// --- Visualizer ------------------------------------------------------------
+
+const viz = createVisualizer(document.getElementById("viz"));
+const vizModeBtn = document.getElementById("viz-mode");
+const vizToggleBtn = document.getElementById("viz-toggle");
+
+vizModeBtn.addEventListener("click", () => {
+  viz.next();
+  vizModeBtn.textContent = `✨ ${viz.modeName}`;
+});
+setInterval(() => (vizModeBtn.textContent = `✨ ${viz.modeName}`), 1000);
+
+vizToggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("viz-hidden");
+  localStorage.setItem("viz-hidden", document.body.classList.contains("viz-hidden"));
+});
+if (localStorage.getItem("viz-hidden") === "true") document.body.classList.add("viz-hidden");
 
 // Stopp planleggingen og fade master ned, så lange samples og reverb-haler ikke henger igjen.
 function stopAll() {

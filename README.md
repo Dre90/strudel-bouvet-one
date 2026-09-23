@@ -20,6 +20,10 @@ Nettleseren åpner http://localhost:5173. Trykk **Start** (nettleseren krever et
 - «sound … not found» betyr enten at instrumentnavnet er feil (se lista i `.github/copilot-instructions.md`), eller at soundfonten fortsatt lastes – da forsvinner meldingen av seg selv.
 - Snarveier i nettleseren: `Cmd/Ctrl+Enter` evaluer, `Cmd/Ctrl+.` stopp.
 
+## Visualizer (til storskjerm)
+
+Høyre del av skjermen viser en Winamp-aktig visualisering av lyden: fem moduser (`bars`, `scope`, `radial`, `particles`, `tunnel`) som bytter automatisk hvert 40. sekund. **✨**-knappen bytter manuelt, **◨** skjuler/viser panelet (huskes). Fargene glir sakte, og partikler/ringer trigges av kicken.
+
 ## Setlister (automatisk bytte)
 
 Velg setliste i dropdown og trykk **▶ Spill setliste**. Den starter alltid fra første låt. Hver låt spilles så lenge `// @minutes N` i fila sier (standard `defaultMinutes`), så fades lyden ned, neste låt lastes og fades opp igjen (`crossfadeSeconds`). Statuslinja viser nedtelling og neste låt. **⏭ Neste** hopper videre med en gang. Bytter du låt manuelt i dropdown, slås setlista av.

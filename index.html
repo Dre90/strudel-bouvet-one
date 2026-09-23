@@ -14,10 +14,16 @@
       <select id="setlist-select" title="Velg setliste (setlists/*.json)"></select>
       <button id="setlist" title="Spill valgt setliste fra start med myk overgang mellom låtene">▶ Spill setliste</button>
       <button id="next" title="Hopp til neste låt i setlista" hidden>⏭ Neste</button>
+      <span class="sep"></span>
+      <button id="viz-mode" title="Bytt visualisering (bytter automatisk hvert 40. sekund)">✨ bars</button>
+      <button id="viz-toggle" title="Vis/skjul visualisering">◨</button>
       <span id="status">Klar – trykk Start for å aktivere lyd</span>
     </header>
     <pre id="error" hidden></pre>
-    <div id="repl"></div>
+    <main>
+      <div id="repl"></div>
+      <canvas id="viz"></canvas>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
