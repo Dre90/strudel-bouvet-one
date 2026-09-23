@@ -231,6 +231,17 @@ export function createVisualizer(canvas, { autoCycleSeconds = 40 } = {}) {
     analyser.getByteTimeDomainData(wave);
     const hit = detectBeat();
     frames++;
+
+    // Stillhet (stoppet / fadet ned): tegn ingenting nytt, bare la bildet dø ut.
+    let peak = 0;
+    for (let i = 0; i < 64; i++) if (freq[i] > peak) peak = freq[i];
+    if (peak < 12) {
+      fade(w, h, 0.12);
+      particles.length = 0;
+      rings.length = 0;
+      return;
+    }
+
     hue = (hue + 0.15 + beat * 0.5) % 360;
 
     if (autoCycleSeconds && performance.now() - lastCycle > autoCycleSeconds * 1000) next();
