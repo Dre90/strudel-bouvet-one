@@ -1,0 +1,12 @@
+{
+  "name": "Rolig kveld",
+  "crossfadeSeconds": 8,
+  "defaultMinutes": 4,
+  "songs": [
+    "07-soft-lounge",
+    "08-downtempo",
+    "05-chill-hiphop",
+    "12-stovete",
+    "15-siste-sol"
+  ]
+}

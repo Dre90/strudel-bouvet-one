@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strudel – lokal</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <button id="toggle" class="primary">▶ Start</button>
+      <select id="pattern"></select>
+      <span class="sep"></span>
+      <select id="setlist-select" title="Velg setliste (setlists/*.json)"></select>
+      <button id="setlist" title="Spill valgt setliste fra start med myk overgang mellom låtene">▶ Spill setliste</button>
+      <button id="next" title="Hopp til neste låt i setlista" hidden>⏭ Neste</button>
+      <span id="status">Klar – trykk Start for å aktivere lyd</span>
+    </header>
+    <pre id="error" hidden></pre>
+    <div id="repl"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
